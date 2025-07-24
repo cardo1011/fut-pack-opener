@@ -7,6 +7,16 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
+def findButtons(xpath):
+    return driver.find_elements(By.XPATH, xpath)
+
+def button_to_be_clicked(list_of_buttons: list, innerHTML_of_button: str):
+    for button in list_of_buttons:
+        if innerHTML_of_button in button.get_attribute('innerHTML'):
+            button.click()
+            return
+    print(f"No button found containing: {innerHTML_of_button}")
+
 options = Options()
 options.add_experimental_option("detach", True)
 
@@ -38,18 +48,58 @@ try:
 except:
     print("Timed out waiting for the home page to load...")
 
-# finds all the button elements that are children of a nav element
-home_buttons = driver.find_elements(By.XPATH, "//nav/button")
-
-# iterate through the elements of home_buttons to find the "Store" button and click on it when found 
-for button in home_buttons:
-    if "Store" in button.get_attribute('innerHTML'):
-        button.click()
-        print("Store button clicked")
+# finds all the button elements on the home page that are children of a nav element and clicks on the button with the text that contains "Store"
+home_buttons = findButtons('//nav/button')
+button_to_be_clicked(home_buttons, "Store")
 
 # Wait for the store to load and give us the tile that shows if there is any "Unassigned items"
-items_tile = driver.find_elements(By.XPATH,  "//div[contains(@class, 'ut-unassigned-tile-view') and contains(@class, 'tile')]")
-# wait for the "unassigned items tile to appear"
+packs_tile = driver.find_element(By.XPATH,  "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")
+
 time.sleep(5)
-# clicks on the unassigned items tile
-items_tile[0].click()
+# clicks on the Packs tile
+packs_tile.click()
+
+time.sleep(3)
+
+packs = findButtons("//button[contains(@class, 'currency') and contains(@class, 'call-to-action')]")
+
+while packs:
+    # opens pack
+    packs[0].click()
+
+    time.sleep(10)
+
+    # clicks on ellipsis button in the pack to handle the contents of the pack
+    ellipsis_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'ut-image-button-control') and contains(@class, 'ellipsis-btn')]")
+    ellipsis_btn.click()
+
+    time.sleep(3)
+    #clicks button to store all contents of 
+    store_in_club_btns = findButtons('//button')
+    button_to_be_clicked(store_in_club_btns, "Store All in Club")
+
+    # must check if any duplicate items or items that can't be sent to the still need to be either quick sold or delt with
+    if len(driver.find_elements(By.TAG_NAME, 'li')) > 0:
+            # click ellipsis button to quick sell everything 
+            ellipsis_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'ut-image-button-control') and contains(@class, 'ellipsis-btn')]")
+            ellipsis_btn.click()
+            
+            quick_sell_btns = findButtons('//button')
+            button_to_be_clicked(quick_sell_btns, "Quick Sell untradeable items for 0")
+
+            ok_btns = findButtons('//button')
+            button_to_be_clicked(ok_btns, "Ok")
+    # click on the store button again once all contents of pack have been sent to the club
+    home_buttons = findButtons('//nav/button')
+    button_to_be_clicked(home_buttons, "Store")
+
+    # click on the packs tile to in order to click on the next pack to open
+    packs_tile = driver.find_element(By.XPATH,  "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")
+    time.sleep(5)
+    # clicks on the Packs tile
+    packs_tile.click()
+      
+    # update packs to reflect the new amount of packs to be opened before the next iteration condition check 
+    packs = findButtons("//button[contains(@class, 'currency') and contains(@class, 'call-to-action')]")
+
+
