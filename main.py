@@ -83,9 +83,11 @@ while packs:
             # click ellipsis button to quick sell everything 
             ellipsis_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'ut-image-button-control') and contains(@class, 'ellipsis-btn')]")
             ellipsis_btn.click()
+
+            time.sleep(3)
             
-            quick_sell_btns = findButtons('//button')
-            button_to_be_clicked(quick_sell_btns, "Quick Sell untradeable items for 0")
+            quick_sell_btns = findButtons("//button[.//span[contains(text(), 'Quick Sell untradeable iteqms for')]]")
+            quick_sell_btns[0].click()
 
             ok_btns = findButtons('//button')
             button_to_be_clicked(ok_btns, "Ok")
