@@ -78,22 +78,43 @@ while packs:
     store_in_club_btns = findButtons('//button')
     button_to_be_clicked(store_in_club_btns, "Store All in Club")
 
+    time.sleep(3)
+    # If there are duplicate items that can't be stored, we will quick sell them
+    ellipsis_btns = driver.find_elements(By.XPATH, "//button[contains(@class, 'ellipsis-btn')]")
+
+    if ellipsis_btns:
+        ellipsis_btn = ellipsis_btns[0]
+        ellipsis_btn.click()
+
+        time.sleep(1)
+        quick_sell_duplicates_btns = findButtons('//button')
+        button_to_be_clicked(quick_sell_duplicates_btns, "Quick Sell")
+
+        ok_btns = findButtons('//button')
+        button_to_be_clicked(ok_btns, "Ok")
+
+    time.sleep(3)
+    pack_items_cleared = driver.find_elements(By.XPATH, "//h2[normalize-space()='You have no unassigned items.']")
+
+    if pack_items_cleared:
+        home_buttons = findButtons('//nav/button')
+        button_to_be_clicked(home_buttons, "Store")
+
+
     # must check if any duplicate items or items that can't be sent to the still need to be either quick sold or delt with
-    if len(driver.find_elements(By.TAG_NAME, 'li')) > 0:
-            # click ellipsis button to quick sell everything 
-            ellipsis_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'ut-image-button-control') and contains(@class, 'ellipsis-btn')]")
-            ellipsis_btn.click()
+    # if len(driver.find_elements(By.TAG_NAME, 'li')) > 0:
+    #         # click ellipsis button to quick sell everything 
+    #         ellipsis_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'ut-image-button-control') and contains(@class, 'ellipsis-btn')]")
+    #         ellipsis_btn.click()
 
-            time.sleep(3)
+    #         time.sleep(3)
             
-            quick_sell_btns = findButtons("//button[.//span[contains(text(), 'Quick Sell untradeable iteqms for')]]")
-            quick_sell_btns[0].click()
+    #         quick_sell_btns = findButtons("//button[.//span[contains(text(), 'Quick Sell untradeable iteqms for')]]")
+    #         quick_sell_btns[0].click()
 
-            ok_btns = findButtons('//button')
-            button_to_be_clicked(ok_btns, "Ok")
+    #         ok_btns = findButtons('//button')
+    #         button_to_be_clicked(ok_btns, "Ok")
     # click on the store button again once all contents of pack have been sent to the club
-    home_buttons = findButtons('//nav/button')
-    button_to_be_clicked(home_buttons, "Store")
 
     # click on the packs tile to in order to click on the next pack to open
     packs_tile = driver.find_element(By.XPATH,  "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")
