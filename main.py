@@ -14,8 +14,9 @@ def button_to_be_clicked(list_of_buttons: list, innerHTML_of_button: str):
     for button in list_of_buttons:
         if innerHTML_of_button in button.get_attribute('innerHTML'):
             button.click()
-            return
+            return True
     print(f"No button found containing: {innerHTML_of_button}")
+    return False
 
 options = Options()
 options.add_experimental_option("detach", True)
@@ -69,29 +70,41 @@ while packs:
 
     time.sleep(10)
 
-    # clicks on ellipsis button in the pack to handle the contents of the pack
-    ellipsis_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'ut-image-button-control') and contains(@class, 'ellipsis-btn')]")
-    ellipsis_btn.click()
-
-    time.sleep(3)
-    #clicks button to store all contents of 
-    store_in_club_btns = findButtons('//button')
-    button_to_be_clicked(store_in_club_btns, "Store All in Club")
-
-    time.sleep(3)
-    # If there are duplicate items that can't be stored, we will quick sell them
-    ellipsis_btns = driver.find_elements(By.XPATH, "//button[contains(@class, 'ellipsis-btn')]")
-
-    if ellipsis_btns:
-        ellipsis_btn = ellipsis_btns[0]
+    # quick sell all contents of pack that are under the H2 that contains the string "Duplicates"
+    if driver.find_elements(By.XPATH, "//h2[contains(normalize-space(), 'Duplicates')]"):
+        ellipsis_btn = driver.find_element(By.XPATH, "//h2[contains(text(), 'Duplicates')]/ancestor::header//button[contains(@class, 'ellipsis-btn')]")
         ellipsis_btn.click()
 
-        time.sleep(1)
-        quick_sell_duplicates_btns = findButtons('//button')
-        button_to_be_clicked(quick_sell_duplicates_btns, "Quick Sell")
+        #*****************************************************************
+        # ellipsis_btns = driver.find_elements(By.XPATH, "//button[contains(@class, 'ellipsis-btn')]")
+        # WebDriverWait(driver, 10).until(
+        # EC.invisibility_of_element_located((By.CLASS_NAME, "view-modal-container")))
+
+        # quick_sell_duplicates_btns = findButtons('//button')
+        # button_to_be_clicked(quick_sell_duplicates_btns, "Quick Sell")
+        #*****************************************************************
+
+        quick_sell_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Quick Sell')]")))
+        quick_sell_button.click()
+
 
         ok_btns = findButtons('//button')
         button_to_be_clicked(ok_btns, "Ok")
+
+    if driver.find_elements(By.XPATH, "//button[contains(@class, 'ellipsis-btn')]"):
+
+        # clicks on ellipsis button in the pack to handle the contents of the pack
+        ellipsis_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'ut-image-button-control') and contains(@class, 'ellipsis-btn')]")
+
+        ellipsis_btn.click()
+
+        time.sleep(3)
+        #clicks button to store all contents of 
+        store_in_club_btns = findButtons('//button')
+        button_to_be_clicked(store_in_club_btns, "Store All in Club")
+
+
 
     time.sleep(3)
     pack_items_cleared = driver.find_elements(By.XPATH, "//h2[normalize-space()='You have no unassigned items.']")
@@ -101,21 +114,6 @@ while packs:
         button_to_be_clicked(home_buttons, "Store")
 
 
-    # must check if any duplicate items or items that can't be sent to the still need to be either quick sold or delt with
-    # if len(driver.find_elements(By.TAG_NAME, 'li')) > 0:
-    #         # click ellipsis button to quick sell everything 
-    #         ellipsis_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'ut-image-button-control') and contains(@class, 'ellipsis-btn')]")
-    #         ellipsis_btn.click()
-
-    #         time.sleep(3)
-            
-    #         quick_sell_btns = findButtons("//button[.//span[contains(text(), 'Quick Sell untradeable iteqms for')]]")
-    #         quick_sell_btns[0].click()
-
-    #         ok_btns = findButtons('//button')
-    #         button_to_be_clicked(ok_btns, "Ok")
-    # click on the store button again once all contents of pack have been sent to the club
-
     # click on the packs tile to in order to click on the next pack to open
     packs_tile = driver.find_element(By.XPATH,  "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")
     time.sleep(5)
@@ -123,6 +121,14 @@ while packs:
     packs_tile.click()
       
     # update packs to reflect the new amount of packs to be opened before the next iteration condition check 
+    try:
+        WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//button[contains(@class, 'currency') and contains(@class, 'call-to-action')]"))
+        )
+    except:
+        print("No more packs found. Ending loop.")
+        break
+
     packs = findButtons("//button[contains(@class, 'currency') and contains(@class, 'call-to-action')]")
 
 
