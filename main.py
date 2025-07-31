@@ -53,16 +53,11 @@ except:
 home_buttons = findButtons('//nav/button')
 button_to_be_clicked(home_buttons, "Store")
 
-# Wait for the store to load and give us the tile that shows if there is any "Unassigned items"
-# packs_tile = driver.find_element(By.XPATH,  "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")
-# time.sleep(5)
-# clicks on the Packs tile
+# Wait for the store to load and then clicks on the "Packs" tile
 WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")))
-
 driver.find_element(By.XPATH, "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]").click()
 
 time.sleep(3)
-
 packs = findButtons("//button[contains(@class, 'currency') and contains(@class, 'call-to-action')]")
 
 while packs:
@@ -106,12 +101,11 @@ while packs:
         home_buttons = findButtons('//nav/button')
         button_to_be_clicked(home_buttons, "Store")
 
+    # ++++++++++++++++++++++++++++++++++++++ Last thing i did was refactor the waiting for the "Packs" tile to be visible before clicking on it again
 
-    # click on the packs tile to in order to click on the next pack to open
-    packs_tile = driver.find_element(By.XPATH,  "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")
-    time.sleep(5)
-    # clicks on the Packs tile
-    packs_tile.click()
+    # Wait for the store to load and then clicks on the "Packs" tile
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")))
+    driver.find_element(By.XPATH, "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]").click()
       
     # update packs to reflect the new amount of packs to be opened before the next iteration condition check 
     try:
