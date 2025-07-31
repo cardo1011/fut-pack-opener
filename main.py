@@ -61,14 +61,18 @@ try:
 except:
     print("\nTimed out waiting for packs tile to load\n")
 
-time.sleep(3)
-packs = findButtons("//button[contains(@class, 'currency') and contains(@class, 'call-to-action')]")
+# clicks on the "Open Pack" button to open the first pack on the page
+try:
+    element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'currency') and contains(@class, 'call-to-action')]")))
+    driver.find_elements(By.XPATH, "//button[contains(@class, 'currency') and contains(@class, 'call-to-action')]")[0].click()
+    print("\nOpening a new pack!")
+except:
+    print("\nTimed out waiting for the button to open a pack to be clickable\n")
 
 # while packs: #commented out to test code while refactoring
 # opens pack
-packs[0].click()
 
-time.sleep(10)
+time.sleep(5)
 
 # quick sell all contents of pack that are under the H2 that contains the string "Duplicates"
 if driver.find_elements(By.XPATH, "//h2[contains(normalize-space(), 'Duplicates')]"):
