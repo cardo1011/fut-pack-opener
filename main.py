@@ -54,11 +54,12 @@ home_buttons = findButtons('//nav/button')
 button_to_be_clicked(home_buttons, "Store")
 
 # Wait for the store to load and give us the tile that shows if there is any "Unassigned items"
-packs_tile = driver.find_element(By.XPATH,  "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")
-
-time.sleep(5)
+# packs_tile = driver.find_element(By.XPATH,  "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")
+# time.sleep(5)
 # clicks on the Packs tile
-packs_tile.click()
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]")))
+
+driver.find_element(By.XPATH, "//div[contains(@class, 'packs-tile') and contains(@class, 'tile')]").click()
 
 time.sleep(3)
 
@@ -75,20 +76,12 @@ while packs:
         ellipsis_btn = driver.find_element(By.XPATH, "//h2[contains(text(), 'Duplicates')]/ancestor::header//button[contains(@class, 'ellipsis-btn')]")
         ellipsis_btn.click()
 
-        #*****************************************************************
-        # ellipsis_btns = driver.find_elements(By.XPATH, "//button[contains(@class, 'ellipsis-btn')]")
-        # WebDriverWait(driver, 10).until(
-        # EC.invisibility_of_element_located((By.CLASS_NAME, "view-modal-container")))
-
-        # quick_sell_duplicates_btns = findButtons('//button')
-        # button_to_be_clicked(quick_sell_duplicates_btns, "Quick Sell")
-        #*****************************************************************
 
         quick_sell_button = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Quick Sell')]")))
+        EC.element_to_be_clickable((By.XPATH, "//button[.//span[@class='btn-text currency-coins' and contains(text(), 'Quick Sell')]]")))
         quick_sell_button.click()
 
-
+        time.sleep(2)
         ok_btns = findButtons('//button')
         button_to_be_clicked(ok_btns, "Ok")
 
