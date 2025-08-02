@@ -64,7 +64,7 @@ copy and paste command into terminal to download selenium
 
 5. Repeat until there are no more packs left.
 
-🛑 Notes
+## 🛑 Notes
 
 - The user must manually log into their FUT account after clicking the "Login" button. This is intentional, in order to avoid security concerns of anybody that may use the script
 
@@ -77,20 +77,26 @@ copy and paste command into terminal to download selenium
 
 You will have to login again. To avoid this anytime when using the script, log in before running the script and clear all welcome messages from EA and then run the script
 
-🧠 Tips
+## 🧠 Tips
 
-- The script will crash if any draft token packs, player picks, or coin packs are opened since the script is not written to handle those scenarios. If encountered with this scenario, simply copy and paste the following commands (without the quotation marks) into your terminal one at a time and hit "enter" after pasting each command into your terminal:
+### The script will crash in the scenario of any of the following packs are within the pack that's being opened;
+
+- draft token pack
+- player picks
+- coin packs
+  They are unable to be opened since the script is not written to handle those scenarios. If encountered with this scenario, simply copy and paste the following commands (without the quotation marks) into your terminal one at a time and hit "enter" after pasting each command into your terminal:
 
 1. "clear"
 2. "python3 main.py"
 
-- You will have to login again.
+### You will have to login again.
 
 # ATTENTION
 
-- The script does not save ANY duplicates. It does not matter if you pack a 99 overall or a -99 overall, the script will ALWAYS quick sell duplicates. Otherwise it will store any new contents to the club
+### The script does not save ANY duplicates. It does not matter if you pack a 99 overall or a -99 overall, the script will ALWAYS quick sell duplicates. Otherwise it will store any new contents to the club
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
+
 Python
 
 Selenium WebDriver
