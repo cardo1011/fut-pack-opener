@@ -7,9 +7,13 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
+# finds ALL the buttons on the page
 def findButtons(xpath):
     return driver.find_elements(By.XPATH, xpath)
 
+# This method should be called right after using the findButtons() in order to click on the desired button. 
+# The function takes the list of button elements present on the page as the first parameter, and the
+# string that should be found within the button that is intended to be clicked is the second parameter
 def button_to_be_clicked(list_of_buttons: list, innerHTML_of_button: str):
     for button in list_of_buttons:
         if innerHTML_of_button in button.get_attribute('innerHTML'):
@@ -17,7 +21,6 @@ def button_to_be_clicked(list_of_buttons: list, innerHTML_of_button: str):
             return True
     print(f"No button found containing: {innerHTML_of_button}")
     return False
-    
 
 options = Options()
 options.add_experimental_option("detach", True) 
