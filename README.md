@@ -70,6 +70,13 @@ copy and paste command into terminal to download selenium
 
 - A delay (time.sleep()) is used to allow animations to finish. You can adjust timing for faster or slower automation depending on system/browser speed. Simply change the number in between the two parenthesis to whatever amount of seconds you want the script to stall.
 
+- If there is a welcome message from EA when first logging in, the script will crash. If encountered with this scenario, simply copy and paste the following commands (without the quotation marks) into your terminal one at a time and hit "enter" after pasting each command into your terminal:
+
+1. "clear"
+2. "python3 main.py"
+
+You will have to login again. To avoid this anytime when using the script, log in before running the script and clear all welcome messages from EA and then run the script
+
 🧠 Tips
 
 - The script will crash if any draft token packs, player picks, or coin packs are opened since the script is not written to handle those scenarios. If encountered with this scenario, simply copy and paste the following commands (without the quotation marks) into your terminal one at a time and hit "enter" after pasting each command into your terminal:
