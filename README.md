@@ -54,13 +54,13 @@ copy and paste command into terminal to download selenium
 
 4. For each pack:
 
-- Open the pack.
+   - Open the pack.
 
-- Wait for the animation.
+   - Wait for the animation.
 
-- Quick sell duplicates, if any.
+   - Quick sell duplicates, if any.
 
-- Store remaining items in the club.
+   - Store remaining items in the club.
 
 5. Repeat until there are no more packs left.
 
